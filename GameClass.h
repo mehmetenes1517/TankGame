@@ -56,11 +56,11 @@ struct Rectangle2D{
     float rot_dir=1.0f;
     
     Geometry::Pointf GetUpVector(){
-        auto rotate_p=[](Geometry::Pointf p,float teta){return Geometry::Pointf(p.X*std::cosf((float)TO_RADIANS(teta))-p.Y*std::sinf((float)TO_RADIANS(teta)),p.X*std::sinf((float)TO_RADIANS(teta))+p.Y*std::cosf((float)TO_RADIANS(teta)));};
+        auto rotate_p=[](Geometry::Pointf p,float teta){return Geometry::Pointf(p.X*cosf((float)TO_RADIANS(teta))-p.Y*sinf((float)TO_RADIANS(teta)),p.X*sinf((float)TO_RADIANS(teta))+p.Y*cosf((float)TO_RADIANS(teta)));};
         return rotate_p(mesh.vectors.UpVector,transform.rotation);
     }
     Geometry::Pointf GetRightVector(){
-        auto rotate_p=[](Geometry::Pointf p,float teta){return Geometry::Pointf(p.X*std::cosf((float)TO_RADIANS(teta))-p.Y*std::sinf((float)TO_RADIANS(teta)),p.X*std::sinf((float)TO_RADIANS(teta))+p.Y*std::cosf((float)TO_RADIANS(teta)));};
+        auto rotate_p=[](Geometry::Pointf p,float teta){return Geometry::Pointf(p.X*cosf((float)TO_RADIANS(teta))-p.Y*sinf((float)TO_RADIANS(teta)),p.X*sinf((float)TO_RADIANS(teta))+p.Y*cosf((float)TO_RADIANS(teta)));};
         return rotate_p(mesh.vectors.RightVector,transform.rotation);
 
     }
