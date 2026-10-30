@@ -3,6 +3,7 @@
 #include<array>
 #include<functional>
 #include<algorithm>
+#include<cstdlib>
 #include<cmath>
 #include<memory>
 #include<Gorgon/Main.h>
