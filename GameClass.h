@@ -2,6 +2,8 @@
 #include<iostream>
 #include<array>
 #include<functional>
+#include<algorithm>
+#include<cmath>
 #include<memory>
 #include<Gorgon/Main.h>
 #include<Gorgon/Graphics.h>
@@ -427,9 +429,12 @@ struct Game{
                 b->Update(mainLayer,deltaTime,bulletspeed);
 
             }
-            std::erase_if(bullets, [](const auto& bullet) { 
-                return bullet->isDestroyed; 
-            });
+            bullets.erase(
+                std::remove_if(bullets.begin(), bullets.end(), [](const auto& bullet) {
+                    return bullet->isDestroyed;
+                }),
+                bullets.end()
+            );
         }
 
         bool CheckCollision(const Geometry::Rectanglef& rect1 , const Geometry::Rectanglef& rect2){
