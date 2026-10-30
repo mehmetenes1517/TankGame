@@ -75,7 +75,8 @@ struct Rectangle2D{
     Rect2DMesh GetTransformedMesh() noexcept {
         Rect2DMesh mesh1=this->mesh;
         auto scale_p=[](Geometry::Pointf p,Geometry::Sizef scale){return Geometry::Pointf(p.X*scale.Width,p.Y*scale.Height);};
-        auto rotate_p=[](Geometry::Pointf p,float teta){return Geometry::Pointf(p.X*std::cosf((float)TO_RADIANS(teta))-p.Y*std::sinf((float)TO_RADIANS(teta)),p.X*std::sinf((float)TO_RADIANS(teta))+p.Y*std::cosf((float)TO_RADIANS(teta)));};
+        auto rotate_p=[](Geometry::Pointf p,float teta){return Geometry::Pointf(p.X*cosf((float)TO_RADIANS(teta))-p.Y*sinf((float)TO_RADIANS(teta)),p.X*sinf((float)TO_RADIANS(teta))+p.Y*cosf((float)TO_RADIANS(teta)));};
+
         auto translate_p=[](Geometry::Pointf p,Geometry::Pointf delta_p){return Geometry::Pointf(p.X+delta_p.X,p.Y+delta_p.Y);};
         mesh1.vectors.UpVector=rotate_p(mesh1.vectors.UpVector,transform.rotation);
         mesh1.vectors.RightVector=rotate_p(mesh1.vectors.RightVector,transform.rotation);
