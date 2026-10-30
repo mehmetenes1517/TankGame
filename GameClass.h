@@ -152,9 +152,9 @@ struct Game{
 
     GameState gameState=GameState::GAME_MAIN_MENU;
     Input::Keyboard::Key player1move=Input::Keyboard::Keycodes::W;
-    Input::Keyboard::Key player1shoot=Input::Keyboard::Keycodes::E;
+    Input::Keyboard::Key player1shoot=Input::Keyboard::Keycodes::Z;
     Input::Keyboard::Key player2move=Input::Keyboard::Keycodes::Up;
-    Input::Keyboard::Key player2shoot=Input::Keyboard::Keycodes::L;
+    Input::Keyboard::Key player2shoot=Input::Keyboard::Keycodes::T;
 
     Winner winner=Winner::NONE;
 
