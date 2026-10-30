@@ -51,6 +51,7 @@ struct Rectangle2D{
     uint32_t color=0xffffffff;
     Graphics::Bitmap* texture=NULL;
     float rot_dir=1.0f;
+    
     Geometry::Pointf GetUpVector(){
         auto rotate_p=[](Geometry::Pointf p,float teta){return Geometry::Pointf(p.X*std::cosf((float)TO_RADIANS(teta))-p.Y*std::sinf((float)TO_RADIANS(teta)),p.X*std::sinf((float)TO_RADIANS(teta))+p.Y*std::cosf((float)TO_RADIANS(teta)));};
         return rotate_p(mesh.vectors.UpVector,transform.rotation);
@@ -132,6 +133,12 @@ enum class GameState {
     GAME_END_P1,
     GAME_END_P2,
     GAME_MAIN_MENU,
+    GAME_ENDS
+};
+enum class Winner{
+    PLAYER1,
+    PLAYER2,
+    NONE
 };
 constexpr int WIDTH=1600,HEIGHT=900;
 struct Game{
@@ -149,6 +156,7 @@ struct Game{
     Input::Keyboard::Key player2move=Input::Keyboard::Keycodes::Up;
     Input::Keyboard::Key player2shoot=Input::Keyboard::Keycodes::L;
 
+    Winner winner=Winner::NONE;
 
 
 
@@ -170,6 +178,7 @@ struct Game{
     Graphics::FreeType font1;
     float startTimer=GAME_START_SECONDS;
     float endTimer=GAME_END_SECONDS;
+    float endTimer1=GAME_END_SECONDS;
     std::string endstring="";
     int p1_score=0,p2_score=0;
 
@@ -288,7 +297,17 @@ struct Game{
                     gameState=GameState::GAME_START;
                     bullets.clear();
                     map_list.clear();
+                    if (p1_score>=5 or p2_score>=5){
 
+                        if(p1_score>=5){
+                            winner=Winner::PLAYER1;
+                        }
+                        else if(p2_score>=5){
+                            winner=Winner::PLAYER2;
+                        }
+                        gameState=GameState::GAME_ENDS;
+                    }
+                    endTimer=GAME_END_SECONDS;
                 }
                 break;
             case GameState::GAME_END_P2:   
@@ -300,16 +319,54 @@ struct Game{
                     gameState=GameState::GAME_START;
                     bullets.clear();
                     map_list.clear();
+                    if (p1_score>=5 or p2_score>=5){
 
+                        if(p1_score>=5){
+                            winner=Winner::PLAYER1;
+                        }
+                        else if(p2_score>=5){
+                            winner=Winner::PLAYER2;
+                        }
+                        gameState=GameState::GAME_ENDS;
+                    }
+                    endTimer=GAME_END_SECONDS;
                 }
                 break;
             case GameState::GAME_MAIN_MENU:
                 HandleUIMainmenu(deltaTime);
                 break;
+            case GameState::GAME_ENDS:
+                endTimer1-=deltaTime;
+
+                HandleGameEndUI(deltaTime);
+
+                if(endTimer1<0.0f){
+                    gameState=GameState::GAME_MAIN_MENU;
+                    endTimer1=GAME_END_SECONDS;
+                }
+                break;
         }
         
     }
-
+    void HandleGameEndUI(float deltaTime){
+        auto str=std::string("");
+        uint32_t color=0xffffffff;
+        switch (winner)
+        {
+        case Winner::PLAYER1:
+            str="| Player 1 Won! |";
+            color=player1.color;
+            break;
+        case Winner::PLAYER2:
+            str="| Player 2 Won! |";
+        color=player2.color;
+            break;    
+        default:
+            str="| Draw |";
+            break;
+        }
+        ui_vars.bigfont.Print(mainLayer,str,Geometry::Pointf(width/2-ui_vars.bigfont.GetSize(str).Width/2,height/2-ui_vars.bigfont.GetSize(str).Height/2),(Graphics::RGBAf)color);
+    }
     void ClearInputMap(){
         inputMapOnce.clear();
     }
@@ -407,6 +464,7 @@ struct Game{
                 gameState=GameState::GAME_RUNNING;
                 InitMap();
                 t=1.0f;
+                startTimer=GAME_START_SECONDS;
             }
         }
 
