@@ -161,7 +161,7 @@ struct Game{
     Input::Keyboard::Key player2shoot=Input::Keyboard::Keycodes::T;
 
     Winner winner=Winner::NONE;
-
+    int sound_id=0;
 
 
     void LoadTexture(const std::string& tag,const std::string& filename){
@@ -269,7 +269,7 @@ struct Game{
                 break;
             case GameState::GAME_RUNNING:
                 if(isOpenedFirst){
-                    audm.PlaySound("bg",1.0,true);
+                    sound_id=audm.PlaySound("bg",1.0,true);
                     isOpenedFirst=false;
                 }
                 HandlePlayerInputs(deltaTime,135.0f,200.0f);     
@@ -347,6 +347,8 @@ struct Game{
                 if(endTimer1<0.0f){
                     gameState=GameState::GAME_MAIN_MENU;
                     endTimer1=GAME_END_SECONDS;
+                    audm.StopSound("bg",sound_id);
+
                 }
                 break;
         }
